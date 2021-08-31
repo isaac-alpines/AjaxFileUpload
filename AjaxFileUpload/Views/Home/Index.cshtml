@@ -1,0 +1,49 @@
+﻿
+@{
+    ViewBag.Title = "Home";
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <h2>File Upload With Ajax</h2>
+        <hr />
+    </div>
+
+    <div class="col-md-12">
+
+        @using (Html.BeginForm("Index", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
+            <div class="row">
+                <div class="col-md-4">
+                    <input type="file" name="file" class="form-control" />
+                </div>
+                <div class="col-md-4">
+                    <input type="button" id="btnSendFile" class="btn btn-success" value="Send File" />
+                </div>
+            </div>
+        }
+
+    </div> 
+</div>
+
+<script>
+    $("#btnSendFile").click(function () {
+        var formData = new FormData($("form").get(0));
+        // var formData = new FormData($("[name='file']")[0]);
+        // var formData = new FormData($("#form"));
+
+        $.ajax({
+            method: "POST",
+            url: '@Url.Action("FileUpload", "Home")',
+            data: formData,
+            processData: false,
+            contentType: false
+        }).done(function (result) {
+            if (result.hasError == false) {
+                alert(result.message);
+            } else {
+                alert("Error image is null..!");
+            }
+        });
+    });
+</script>
